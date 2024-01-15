@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "@N4m1n4s4h4",
-    "database": "database_development",
+    "database": "todo-list-sequelize",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
