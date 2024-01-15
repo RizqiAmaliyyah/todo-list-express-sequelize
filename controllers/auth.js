@@ -24,19 +24,29 @@ const register = (req, res) => {
 
 }
 
-const login = (req, res) => {
-  // const user = {username: "Kayla", password: "12345"}
-  
+//login
+const login = (req, res) => {  
   const username = req.body.username
   const password = req.body.password
 
-  // console.log(username)
+  const userInDB = userModel.find((user) => user.username == username)
 
-  // Create a JWT token with user infromation
-  const token = jwt.sign(user, secret_key)
+  if(!userInDB) {
+    return res.status(401).send('Username not found')
+  }
 
-  // Send the token to the user
-  res.json({ token })
+  if(bcrypt.compareSync(password, userInDB.password)) {
+    // Create a JWT token with user infromation
+    const token = jwt.sign(username, secret_key)
+    
+    // Send the token to the user
+    res.json({ token })
+    
+  } else {
+    return res.status(401).send('Wrong password')
+
+  }
+
 }
 
 module.exports = {
