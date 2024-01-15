@@ -30,3 +30,33 @@ app.get('/todos/:todoId', async function (req, res) {
   }
 });
 
+// create new todo
+
+const TodoModel = require('./models').Todo;
+
+app.post('/todos', async function (req, res) {
+  try {
+    const { username, tittle, description, startTime } = req.body;
+
+    const mewTodoData = {
+      username: username,
+      tittle: tittle,
+      description: description,
+      startTime: startTime,
+      status: 'false'
+    };
+
+    const newTodo = await TodoModel.create(newTodoData);
+
+    res.status(201).json({
+      message: 'new todo created',
+      todo: newTodo,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message || 'internal server error try again later',
+    });
+  }
+});
+
+
