@@ -60,3 +60,35 @@ app.post('/todos', async function (req, res) {
 });
 
 
+// update todo
+const TodoModel = require('./models').Todo;
+
+app.patch('/todos/:todoId', async function (req, res) {
+  try {
+    const { todoId } = req.params;
+    const { username, tittle, description, startTime, status } = req.body;
+
+    const updateTodoData = {
+      username: username,
+      tittle: tittle,
+      description: description,
+      startTime: startTime,
+      status: status,
+    };
+
+    const updatedTodo = await TodoModel.update(updateTodoData, {
+      where: {
+        id: todoId,
+      }
+    });
+
+    res.status(200).json({
+      message: 'update todo succes',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message || 'internal server error try again later',
+    });
+  }
+});
+
