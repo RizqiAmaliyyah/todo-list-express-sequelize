@@ -2,9 +2,9 @@ const { Todo } = require("../models/todo")
 
 // get all todos
 
-const TodoModel = require('./todos', async function (req, res) {
+const getTodo = require('./todos', async function (req, res) {
   try {
-    const todos = await TodoModel.findAll();
+    const todos = await getTodo.findAll();
 
     res.status(200).json(todos);
   } catch (error) {
@@ -15,12 +15,12 @@ const TodoModel = require('./todos', async function (req, res) {
 });
 
 // get todo detail by Id
-const TodoModel = require('./models').Todo;
+const getTodoDetail = require('./models').Todo;
 
 app.get('/todos/:todoId', async function (req, res) {
   try {
     const { todoId } = req.params;
-    const todo = await TodoModel.findOne({id: Number(todoId)});
+    const todo = await getTodoDetail.findOne({id: Number(todoId)});
 
     res.status(200).json(todo);
   } catch (error) {
@@ -31,14 +31,13 @@ app.get('/todos/:todoId', async function (req, res) {
 });
 
 // create new todo
-
-const TodoModel = require('./models').Todo;
+const createTodo = require('./models').Todo;
 
 app.post('/todos', async function (req, res) {
   try {
     const { username, tittle, description, startTime } = req.body;
 
-    const mewTodoData = {
+    const newTodoData = {
       username: username,
       tittle: tittle,
       description: description,
@@ -46,7 +45,7 @@ app.post('/todos', async function (req, res) {
       status: 'false'
     };
 
-    const newTodo = await TodoModel.create(newTodoData);
+    const newTodo = await createTodo.create(newTodoData);
 
     res.status(201).json({
       message: 'new todo created',
@@ -61,7 +60,7 @@ app.post('/todos', async function (req, res) {
 
 
 // update todo
-const TodoModel = require('./models').Todo;
+const updateTodo = require('./models').Todo;
 
 app.patch('/todos/:todoId', async function (req, res) {
   try {
@@ -76,7 +75,7 @@ app.patch('/todos/:todoId', async function (req, res) {
       status: status,
     };
 
-    const updatedTodo = await TodoModel.update(updateTodoData, {
+    const updatedTodo = await updateTodo.update(updateTodoData, {
       where: {
         id: todoId,
       }
@@ -94,14 +93,13 @@ app.patch('/todos/:todoId', async function (req, res) {
 
 
 // delete todo
-
-const TodoModel = require('./models').Todo;
+const deleteTodo = require('./models').Todo;
 
 app.delete('/todos/:todoId', async function (req, res) {
   try {
     const { todoId } = req.params;
 
-    await TodoModel.destroy({
+    await deleteTodo.destroy({
       where: {
         id: todoId,
       },
@@ -116,3 +114,11 @@ app.delete('/todos/:todoId', async function (req, res) {
     });
   }
 });
+
+module.exports = {
+  getTodo,
+  getTodoDetail,
+  createTodo,
+  updateTodo,
+  deleteTodo
+}
