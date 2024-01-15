@@ -83,7 +83,7 @@ app.patch('/todos/:todoId', async function (req, res) {
     });
 
     res.status(200).json({
-      message: 'update todo succes',
+      message: 'update todo success thank you',
     });
   } catch (error) {
     res.status(500).json({
@@ -92,3 +92,27 @@ app.patch('/todos/:todoId', async function (req, res) {
   }
 });
 
+
+// delete todo
+
+const TodoModel = require('./models').Todo;
+
+app.delete('/todos/:todoId', async function (req, res) {
+  try {
+    const { todoId } = req.params;
+
+    await TodoModel.destroy({
+      where: {
+        id: todoId,
+      },
+    });
+
+    res.status(200).json({
+      message: 'delete todo succes thank you',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message || 'internal server error try again later',
+    });
+  }
+});
